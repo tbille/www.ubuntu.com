@@ -7,6 +7,6 @@ context('Navigation', () => {
 
     it('should select the navigation when clicked', () => {
         cy.get('#download').click()
-        cy.get('#download').should('have.class', 'is-selected')
+        cy.get('#download').should('have.class', 'is-selecteds')
     })
 })

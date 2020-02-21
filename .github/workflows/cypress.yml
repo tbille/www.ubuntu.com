@@ -1,8 +1,6 @@
 name: Run cypress at 7am every day
 
-on:
-  schedule:
-    - cron:  '0 7 * * *'
+on: pull_request
 
 jobs:
   run-cypress:
@@ -14,9 +12,12 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v1
         with:
-          start: /home/runner/work/ubuntu.com/ubuntu.com/run
+          start: ${GITHUB_WORKSPACE}/run
           wait-on: 'http://0.0.0.0:8001/_status/check'
           wait-on-timeout: 180
           browser: chrome
           config-file: tests/cypress/cypress.json
           config: baseUrl=http://0.0.0.0:8001
+      - name: Send message on failure
+        if: failure()
+        run: curl -X POST -F "worflow=${GITHUB_WORKFLOW}" -F "repo_name=${GITHUB_REPOSITORY}" -F "action_id=${GITHUB_ACTION}" {{ secrets.BOT_URL }}/?room=%23sukha
