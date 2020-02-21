@@ -1,8 +1,6 @@
 name: Run cypress at 7am every day
 
-on:
-  schedule:
-    - cron:  '0 7 * * *'
+on: pull-requests
 
 jobs:
   run-cypress:
